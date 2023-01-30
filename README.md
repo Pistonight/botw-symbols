@@ -153,7 +153,7 @@ You can see an example of the build config in `example.toml`
 
 #### Version
 ```
---version -V VERSION
+--version/-V VERSION
 ```
 Version of BotW to link against. VERSION must be either "150" or "160". This will affect what symbol data is used and output/input file names. The same string will be passed to the makefile through the BOTW_VERSION variable.
 
@@ -162,17 +162,17 @@ Version of BotW to link against. VERSION must be either "150" or "160". This wil
 
 #### Clean
 ```
---clean -c
+--clean/-c
 ```
 This will clean the symbols defined in the linker config `.yaml` files and make sure they are up-to-date. Also cleans internal caches used by this tool. The default behavior is only clean when unlinked symbols are found
-### Update
+#### Update
 ```
---update -u
+--update/-u
 ```
 This will fetch the latest CSV symbol listing for BotW 1.5.0 from the decomp project. The default behavior is only fetch if missing
-### Verbose
+#### Verbose
 ```
---verbose -v
+--verbose/-v
 ```
 Show more output
 
