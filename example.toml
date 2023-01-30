@@ -1,3 +1,6 @@
+# Config file for botw-link
+# Copy this file to your project and change it there
+
 # Note that all paths are relative
 
 # Path to the config files where symbols and their addresses are specified.

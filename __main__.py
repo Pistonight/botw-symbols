@@ -1,4 +1,4 @@
-TOOL_VERSION = "0.1.0"
+TOOL_VERSION = "0.1.1"
 import sys
 import os
 from src.util import print_error

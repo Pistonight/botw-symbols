@@ -144,33 +144,35 @@ The tool uses command line arguments to accept inputs so it doesn't depend on ex
 
 You should invoke the tool by calling it from python with the directory path to make sure it works properly, for example:
 ```
-python tools/botw-link config.toml -V 150
+python path/to/botw-link path/to/config.toml -V 150
 ```
 
 You can see an example of the build config in `example.toml`
 
 ### Required Build Flags
 
+#### Version
 ```
 --version -V VERSION
-
-  Version of BotW to link against. VERSION must be either "150" or "160". This will affect what symbol data is used and output/input file names. The same string will be passed to the makefile through the BOTW_VERSION variable.
-
 ```
+Version of BotW to link against. VERSION must be either "150" or "160". This will affect what symbol data is used and output/input file names. The same string will be passed to the makefile through the BOTW_VERSION variable.
+
 
 ### Optional Build Flags
+
+#### Clean
 ```
 --clean -c
-
-  This will clean the symbols defined in the linker config .yaml files and make sure they are up-to-date. Also cleans internal caches used by this tool. The default behavior is only clean when unlinked symbols are found
-
---update -u
-
-  This will fetch the latest CSV symbol listing for BoTW 1.5.0 from the decomp project. The default behavior is only fetch if missing
-
---verbose -v
-
-  Show more output
-
-
 ```
+This will clean the symbols defined in the linker config `.yaml` files and make sure they are up-to-date. Also cleans internal caches used by this tool. The default behavior is only clean when unlinked symbols are found
+### Update
+```
+--update -u
+```
+This will fetch the latest CSV symbol listing for BotW 1.5.0 from the decomp project. The default behavior is only fetch if missing
+### Verbose
+```
+--verbose -v
+```
+Show more output
+

@@ -17,6 +17,8 @@ LINKER_CONFIG_HEADER = """
 # "manual" and "auto" are used to generate linker script
 # "auto" are the ones found by the build tool from the symbol listing
 # "unused" are not used to generate linker script
+#
+# Note that this is not parsed as a standard yaml file. Comments work, but many yaml features don't
 """
 LINKER_SCRIPT_HEADER = """
 /*
