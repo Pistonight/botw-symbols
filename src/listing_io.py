@@ -21,21 +21,24 @@ class SymbolListing:
 
     def find_symbol(self, symbol):
         if not self.symbol_to_addr:
-            addr_to_symbol, error = _init_listing(
-                self.context.log,
-                self.context.tool_path,
-                self.context.version,
-                force_update=FLAG_UPDATE in self.context.flags
-            )
-            if error:
-                return error
-            self.symbol_to_addr = {}
-            for addr, symbol in addr_to_symbol.items():
-                self.symbol_to_addr[symbol] = addr
+            self.load()
 
         if symbol in self.symbol_to_addr:
             return self.symbol_to_addr[symbol], None
         return None, None
+
+    def load(self):
+        addr_to_symbol, error = _init_listing(
+            self.context.log,
+            self.context.tool_path,
+            self.context.version,
+            force_update=FLAG_UPDATE in self.context.flags
+        )
+        if error:
+            return error
+        self.symbol_to_addr = {}
+        for addr, symbol in addr_to_symbol.items():
+            self.symbol_to_addr[symbol] = addr
 
 
 def _init_listing(log, tool_path, version, *, force_update=False):
@@ -185,7 +188,7 @@ def _load_listing(log, file_name, listing):
                 return f"Duplicating listing for address: {addr}"
             symbol = line[11:].strip()
             listing[addr] = symbol
-    log(f"Loaded {len(listing)} symbol listings from")
+    log(f"Loaded {len(listing)} symbol listings")
     return None
 
 
