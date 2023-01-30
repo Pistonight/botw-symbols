@@ -1,0 +1,61 @@
+# Note that all paths are relative
+
+# Path to the config files where symbols and their addresses are specified.
+# The directory must exist.
+# The program will read and write 150.yaml and 160.yaml to this directory
+# You can manually edit those files to add additional bindings
+linker_config_dir = "config/linker"
+
+
+# Path to the generated linker script (.ld) containing the statically linked symbols.
+# This file should be included in your linker .specs file
+output = "config/linker/syms.ld"
+
+
+# Path to the output binaries generated with make.
+# This is used to dump the symbols.
+# The symbol dump will be the same file name with .elf replaced by .syms
+elf = "build/mymodule.elf"
+nso = "build/mymodule.nso"
+
+
+# Make arguments
+# If you don't specify anything ([]), the default will just run `make`
+make_args = ["-j8", "-C", "build"]
+
+
+# Ignored unlinked symbols
+# Some symbols exported by your module is not part of botw. Ignore them here
+ignored_symbols = [
+    "my_main"
+]
+
+
+# Tasks
+# There are optional tasks you can run before the build with side effects
+# Tasks are guaranteed to be cleaned up regardless of if the build is successful.
+
+# Rename task
+# Rename a file or directory. This is useful to hide template source files from make
+[[task.rename]]
+old = "old/path"
+new = "new/path"
+
+# add more
+# [[task.rename]]
+# old="old/path/2"
+# new="new/path/2"
+
+
+# Suppress Warning in external sources
+# Add warning suppress with pragma diagnostics
+# The push and suppress will be added just before the first line that contains the search string
+# The suppressions are popped at the end of the file
+[[task.suppress_warning]]
+file = "external/source.cpp"
+search = "namespace ext"
+suppress = [
+    "-Winvalid-offsetof"
+]
+
+# add more...
