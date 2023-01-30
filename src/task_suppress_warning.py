@@ -64,6 +64,7 @@ class SuppressWarningTask:
         self.context.log(f"Restoring {self.file_name}")
         if os.path.exists(self.file_name_old) and os.path.exists(self.file_name):
             copy2(self.file_name_old, self.file_name)
+            os.remove(self.file_name_old)
 
 
 _CACHE = None
