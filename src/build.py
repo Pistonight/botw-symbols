@@ -7,7 +7,7 @@ from shutil import rmtree
 from src.linker_config import LinkerConfig
 from src.symbol_differ import SymbolDiffer, elf_path_to_syms
 from src.listing_io import SymbolListing, listing_path
-from src.util import Context, FLAG_CLEAN, BUILDCACHE, print_error, print_good, V150
+from src.util import Context, FLAG_CLEAN, BUILDCACHE, FLAG_VERBOSE, print_error, print_good, V150, version_defines
 
 class Build:
     
@@ -40,7 +40,8 @@ class Build:
         ]
         build_cache_path = os.path.join(self.context.tool_path, BUILDCACHE)
         if FLAG_CLEAN in self.context.flags:
-            rmtree(build_cache_path)
+            if os.path.exists(build_cache_path):
+                rmtree(build_cache_path)
             self.stack.append(
                 lambda: self.prepare_rebuild(),
             )
@@ -54,7 +55,6 @@ class Build:
         self.stack.append(lambda: self.initialize())
 
         self.current_step = 0
-
         os.makedirs(build_cache_path, exist_ok=True)
         
         while self.stack:
@@ -65,6 +65,7 @@ class Build:
                 if self.error:
                     self.stack.append(lambda: self.cleanup())
             except Exception as e:
+                print(e)
                 self.error = e
                 self.stack.append(lambda: self.cleanup())
 
@@ -92,8 +93,10 @@ class Build:
         self.make_iteration += 1
         self.start_step(f"Run Make (Iteration {self.make_iteration})")
         make_args = ["make"]
+        if FLAG_VERBOSE in self.context.flags:
+            make_args.append("V=1")
         make_args.extend(self.context.make_args)
-        make_args.append(f"BOTW_VERSION={self.context.version}")
+        make_args.append(version_defines(self.context.version))
         result = subprocess.run(make_args)
         if result.returncode:
             return "make failed"
@@ -192,6 +195,7 @@ class Build:
                 task.cleanup()
             self.linker_config.save()
         except Exception as e:
+            print(e)
             self.error = e
             self.error_source = "Cleanup"
         

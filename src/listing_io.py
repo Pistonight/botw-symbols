@@ -28,7 +28,7 @@ class SymbolListing:
         return None, None
 
     def load(self):
-        addr_to_symbol, error = _init_listing(
+        addr_to_symbol, error = init_listing(
             self.context.log,
             self.context.tool_path,
             self.context.version,
@@ -41,7 +41,7 @@ class SymbolListing:
             self.symbol_to_addr[symbol] = addr
 
 
-def _init_listing(log, tool_path, version, *, force_update=False):
+def init_listing(log, tool_path, version, *, force_update=False):
     """Returns listing, error"""
     if version == V160:
         force_update = False

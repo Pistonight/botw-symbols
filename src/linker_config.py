@@ -178,18 +178,23 @@ class LinkerConfig:
             
             # not adding auto here, for autos to be resolved by
             # scanning botw symbols
+            # mark all manual entries as unused
+            self.manual_unused = set()
             for mode in [MANL, UUSD]: 
                 for addr in self.entries[mode]:
                     self.symbol_to_addr[self.entries[mode][addr]] = addr
-            # mark all manual entries as unused
-            self.manual_unused = set(self.entries[MANL].values())
+                    self.manual_unused.add(self.entries[mode][addr])
+            # move all unused to used now
+            for addr in self.entries[UUSD]:
+                self.entries[MANL][addr] = self.entries[UUSD][addr]
             # delete all auto entries
             self.entries[AUTO] = {}
+            self.entries[UUSD] = {}
         if symbol not in self.symbol_to_addr:
             return None
         addr = self.symbol_to_addr[symbol]
-        if addr in self.manual_unused:
-            self.manual_unused.remove(addr)
+        if symbol in self.manual_unused:
+            self.manual_unused.remove(symbol)
         return addr
 
     def add_auto(self, addr, symbol):
@@ -199,6 +204,7 @@ class LinkerConfig:
     def delete_unused(self):
         if self.symbol_to_addr is not None:
             self.context.log("Rebuilding linker config")
+
             for manual_unused_symbol in self.manual_unused:
                 addr = self.symbol_to_addr[manual_unused_symbol]
                 self.entries[UUSD][addr] = manual_unused_symbol

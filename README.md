@@ -95,6 +95,7 @@ This is the recommended way to make your module interact with BotW.
    const auto pSystemTimers = ksys::SystemTimers::getInstance();
    ```
    In this case we are using the data symbol `_ZN4ksys12SystemTimers9sInstanceE`. Since this is listed in the decomp project, the build tool will automatically find it and link it for you
+1. If you need to get the raw address of a member function (for example for hooking), see the [Glue API](https://github.com/iTNTPiston/botw-link/tree/main/include). **Do not use member function pointers directly as static function pointers.** The compiler will likely stop you anyway.
 
 ### Declare the Symbol Yourself
 Sometimes the symbol isn't in the decomp project. You can either:
@@ -129,9 +130,9 @@ You need to apply some changes to the makefile and other files in the build syst
    %(old_link) -T ../libs/exlaunch/misc/link.ld ../config/linker/syms.ld --shared --export-dynamic 
    ```
    The path should be relative to your build directory
-1. In your `makefile`, include `BOTW_VERSION` as part of the compiler flags. For example:
+1. In your `makefile`, include `BOTW_VERSION_DEFINES` in the compiler flags. For example:
    ```makefile
-   CLFAGS=$(CLFAGS) -DBOTW_VERSION=$(BOTW_VERSION)
+   CLFAGS=$(CLFAGS) $(BOTW_VERSION_DEFINES)
    ```
 1. When calling the tool, specify the linker script output location
    ```
