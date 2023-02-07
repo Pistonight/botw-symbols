@@ -31,3 +31,7 @@ class Context:
     make_args: list
     ignored_symbols: list
     tasks: list
+
+def version_defines(version):
+    major, minor, patch = (7,3,2) if version == V160 else (4,4,0)
+    return f"BOTW_VERSION_DEFINES=-DBOTW_VERSION={version} -DNN_SDK_MAJOR={major} -DNN_SDK_MINOR={minor} -DNN_SDK_PATCH={patch} -DNN_WARE_MAJOR={major} -DNN_WARE_MINOR={minor} -DNN_WARE_PATCH={patch}"
