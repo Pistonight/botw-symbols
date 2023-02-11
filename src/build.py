@@ -2,7 +2,7 @@ import subprocess
 import os
 import sys
 
-from shutil import rmtree, which
+from shutil import rmtree
 
 from src.linker_config import LinkerConfig
 from src.symbol_differ import SymbolDiffer, elf_path_to_syms
@@ -103,7 +103,7 @@ class Build:
         self.context.log("Dumping symbols from elf...")
         with open(elf_path_to_syms(self.context.elf), "w+", encoding="utf-8") as syms:
             result = subprocess.run([
-                which("aarch64-none-elf-objdump"),
+                "aarch64-none-elf-objdump",
                 "-T",
                 self.context.elf,
             ], stdout=syms)
