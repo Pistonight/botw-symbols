@@ -103,7 +103,7 @@ class Build:
         self.context.log("Dumping symbols from elf...")
         with open(elf_path_to_syms(self.context.elf), "w+", encoding="utf-8") as syms:
             result = subprocess.run([
-                "objdump",
+                "aarch64-none-elf-objdump",
                 "-T",
                 self.context.elf,
             ], stdout=syms)
