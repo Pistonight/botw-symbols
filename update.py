@@ -129,10 +129,7 @@ def make_stub(addr):
     return f"stub_{hex(addr)[2:].lower().zfill(8)}"
 
 def make_script(file, script):
-    out = "\n".join([ 
-        f"{x[0]} = {x[1]}; /*{x[2]}*/" if x[2] else f"{x[0]} = {x[1]};"
-        for x in script
-    ])
+    out = "\n".join([ fmt_line(x) for x in script ])
 
     if CHECK:
         with open(file, "r") as f:
@@ -147,6 +144,10 @@ def make_script(file, script):
         f.flush()
 
     print(f"Updated {file}")
+
+def fmt_line(x):
+    comment = f" /*{x[2]}*/" if x[2] else ""
+    return f"PROVIDE_HIDDEN({x[0]} = {x[1]});{comment}"
 
 def make_badge(file, label, count, total):
     percentage = f"{count / total * 100:.2f}"
