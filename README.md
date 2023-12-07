@@ -4,8 +4,21 @@
 
 Linker scripts (*.ld) for linking modules against BOTW 1.5.0 and 1.6.0
 
-**If you are looking for the botw-link build tool, see the [`botw-link`](https://github.com/Pistonight/botw-symbols/tree/botw-link) branch.
-I have a new build tool [megaton](https://github.com/Pistonight/megaton)**
+**If you are looking for the legacy botw-link build tool, see the [`botw-link`](https://github.com/Pistonight/botw-symbols/tree/botw-link) branch.
+I am working on a new build tool [megaton](https://github.com/Pistonight/megaton)**
+
+## Download
+Clone the repo with git. Add `--depth 1` since the diffs might be large for generated files.
+```
+git clone https://github.com/Pistonight/botw-symbols --depth 1
+```
+Or add as a submodule to your repo
+```
+# with git
+git submodule add --name botw-symbols --branch main https://github.com/Pistonight/botw-symbols <path>
+# with magoo
+magoo install https://github.com/Pistonight/botw-symbols <path> --name botw-symbols --branch main --depth 1
+```
 
 ## Usage
 The symbols in the linker scripts are meant to be used with the headers in the [decomp project](https://github.com/zeldaret/botw).
