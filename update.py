@@ -16,6 +16,7 @@ STUB = (
     "_init",
     "_fini",
 )
+
 def update_160():
     print("Updating ld160.ld...")
     base_int = int(BASE160, 16)
