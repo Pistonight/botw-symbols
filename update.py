@@ -53,8 +53,8 @@ def update_160():
 def update_150():
     print("Updating ld150.ld...")
     PREFIX = "0x00000071"
-    DATA_URL = "https://raw.githubusercontent.com/zeldaret/botw/master/data/data_symbols.csv"
-    FUNC_URL = "https://raw.githubusercontent.com/zeldaret/botw/master/data/uking_functions.csv"
+    DATA_URL = "https://raw.githubusercontent.com/Pistonight/botw-decomp/symbols/data/data_symbols.csv"
+    FUNC_URL = "https://raw.githubusercontent.com/Pistonight/botw-decomp/symbols/data/uking_functions.csv"
 
     addrs = set()
     out = []
