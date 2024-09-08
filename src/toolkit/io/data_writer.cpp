@@ -32,7 +32,6 @@ bool DataWriter::append_inactive_to_active() {
     return true;
 }
 
-
 bool DataWriter::do_write_number(const char* field_name, u64 value) {
     auto& inactive = inactive_buffer();
     inactive.clear();
@@ -62,4 +61,4 @@ void DataWriter::flush() {
     }
 }
 
-}  // namespace botw::savs
+} // namespace botw::io

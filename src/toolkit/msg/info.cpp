@@ -22,7 +22,8 @@ void init() {
     s_enabled = true;
 }
 
-bool load_custom_mesasge(sead::SafeString* file, sead::SafeString* msg_id, WideString* out) {
+bool load_custom_mesasge(sead::SafeString* file, sead::SafeString* msg_id,
+                         WideString* out) {
     if (!s_enabled) {
         return false;
     }
@@ -30,7 +31,8 @@ bool load_custom_mesasge(sead::SafeString* file, sead::SafeString* msg_id, WideS
     if (*file == "LayoutMsg/MainScreen_00") {
         // 0028 - The Master Sword has returned to the forest
         // 0061 - In this demo version, you can't advance any farther
-        if (*msg_id == "0061" || *msg_id == "0028"){// output the previously set message
+        if (*msg_id == "0061" ||
+            *msg_id == "0028") { // output the previously set message
             out->content = s_info.content();
             out->length = s_info.len();
             return true;
@@ -43,7 +45,8 @@ void print(const char* message) {
     s_info.copy_from(message);
     // cycle the message index so the game would clear the previous one
     s_info_idx = s_info_idx == 0x21 ? 0x2A : 0x21;
-    ksys_ui_showInfoOverlayWithString(s_info_idx, &sead::SafeStringBase<char>::cEmptyString);
+    ksys_ui_showInfoOverlayWithString(
+        s_info_idx, &sead::SafeStringBase<char>::cEmptyString);
 }
 
 void printf(const char* format, ...) {
@@ -60,4 +63,4 @@ void printf(const char* format, ...) {
     print(result);
 }
 
-}
+} // namespace botw::msg::info

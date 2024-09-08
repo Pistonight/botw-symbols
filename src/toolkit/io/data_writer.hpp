@@ -63,13 +63,15 @@ public:
     }
 
     template <typename T, u32 L>
-    void write_named_integer(const char* field_name, const mem::NamedValue<T, L>& value) {
+    void write_named_integer(const char* field_name,
+                             const mem::NamedValue<T, L>& value) {
         write_string("Name of value below", value.name());
         write_integer(field_name, value.value());
     }
 
     template <typename T, u32 L>
-    void write_named_float(const char* field_name, const mem::NamedValue<T, L>& value) {
+    void write_named_float(const char* field_name,
+                           const mem::NamedValue<T, L>& value) {
         write_string("Name of value below", value.name());
         write_float(field_name, value.value());
     }
@@ -102,5 +104,5 @@ private:
     bool do_write_string(const char* field_name, const char* string);
 };
 
-}  // namespace botw::savs
+} // namespace botw::io
 #pragma GCC diagnostic pop

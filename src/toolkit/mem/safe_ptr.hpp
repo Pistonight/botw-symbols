@@ -3,8 +3,8 @@
  */
 #pragma once
 
-#include <cstddef>
 #include "toolkit/mem/mem_ptr.hpp"
+#include <cstddef>
 
 namespace botw::mem {
 
@@ -12,12 +12,13 @@ namespace botw::mem {
  * safe_ptr<T> can be used like T*, but it checks if the inner value
  * looks like a valid pointer before dereferencing it.
  */
-template <typename T>
-class safe_ptr {
+template <typename T> class safe_ptr {
 public:
     safe_ptr(T* ptr) : m_ptr(ptr) {}
     safe_ptr(const safe_ptr& other) : m_ptr(other.m_ptr) {}
-    safe_ptr(const mem_ptr& p) { m_ptr = p.m_error ? nullptr : reinterpret_cast<T*>(p.m_ptr); }
+    safe_ptr(const mem_ptr& p) {
+        m_ptr = p.m_error ? nullptr : reinterpret_cast<T*>(p.m_ptr);
+    }
 
     bool take_ptr(T** out) const {
         if (!looks_safe()) {
@@ -88,4 +89,4 @@ public:
 private:
     T* m_ptr;
 };
-}
+} // namespace botw::mem

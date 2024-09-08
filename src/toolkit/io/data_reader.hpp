@@ -58,8 +58,7 @@ public:
         }
         *value = reinterpret_cast<f32&>(i_value);
     }
-    template <typename T>
-    void read_integer_array(T* out_array, u32 size) {
+    template <typename T> void read_integer_array(T* out_array, u32 size) {
         read_integer(out_array);
         if (!m_success) {
             return;
@@ -103,5 +102,5 @@ private:
     bool do_read_integer(u64* out_value);
     bool do_read_string(char* out_string, const u32 max_length);
 };
-}  // namespace botw::savs
+} // namespace botw::io
 #pragma GCC diagnostic pop

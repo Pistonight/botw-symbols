@@ -13,8 +13,7 @@
 
 namespace botw::mem {
 
-template <typename T, uint32_t L>
-class StringBufferBase {
+template <typename T, uint32_t L> class StringBufferBase {
 public:
     StringBufferBase() { clear(); }
     void clear() {
@@ -24,7 +23,9 @@ public:
     const T* content() const { return m_content; }
     T* content() { return m_content; }
     T* last() { return m_content + m_len; }
-    uint32_t len() const { return m_len; }  // may include null byte in the middle
+    uint32_t len() const {
+        return m_len;
+    } // may include null byte in the middle
     uint32_t capacity() const { return L; }
 
     void increase_length(uint32_t size) {
@@ -91,8 +92,7 @@ protected:
     uint32_t m_len;
 };
 
-template <uint32_t L>
-class StringBuffer : public StringBufferBase<char, L> {
+template <uint32_t L> class StringBuffer : public StringBufferBase<char, L> {
 public:
     void appendf(const char* format, ...) {
         va_list args;
@@ -119,4 +119,4 @@ public:
     }
 };
 
-}  // namespace botw
+} // namespace botw::mem

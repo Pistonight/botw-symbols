@@ -6,8 +6,7 @@
 
 namespace botw::mem {
 
-template <typename T>
-class internal_ptr {
+template <typename T> class internal_ptr {
 public:
     internal_ptr() = default;
     internal_ptr(void* base, T* ptr) {
@@ -33,16 +32,13 @@ public:
         if (m_nullptr) {
             return nullptr;
         }
-        return reinterpret_cast<T*>(reinterpret_cast<uintptr_t>(base) + m_offset);
+        return reinterpret_cast<T*>(reinterpret_cast<uintptr_t>(base) +
+                                    m_offset);
     }
 
-    bool is_nullptr() const {
-        return m_nullptr;
-    }
+    bool is_nullptr() const { return m_nullptr; }
 
-    uintptr_t offset() const {
-        return m_offset;
-    }
+    uintptr_t offset() const { return m_offset; }
 
     void set(bool is_nullptr, uintptr_t offset) {
         m_nullptr = is_nullptr;
@@ -54,4 +50,4 @@ private:
     uintptr_t m_offset = 0;
 };
 
-}
+} // namespace botw::mem

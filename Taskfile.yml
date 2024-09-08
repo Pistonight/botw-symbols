@@ -4,15 +4,13 @@ tasks:
   check:
     desc: Check formatting
     cmds:
-      - clang-format -n -Werror src/**/*.cpp
-      - clang-format -n -Werror src/**/*.hpp
+      - clang-format -n -Werror $(find src -name '*.cpp' -o -name '*.hpp')
       - python update.py --check
 
   fix:
     desc: Fix formatting in place
     cmds:
-      - clang-format -i src/**/*.cpp
-      - clang-format -i src/**/*.hpp
+      - clang-format -i $(find src -name '*.cpp' -o -name '*.hpp')
 
   update:
     desc: Update the generated files

@@ -25,7 +25,6 @@ extern botw::msg::widget::RuntimeTip* ksys_ui_sRuntimeTips;
 // 0x02CC2490 (1.6.0)
 // 0x025FCC68 (1.5.0)
 extern botw::msg::widget::ScreenMgr* ksys_ui_ScreenMgr_sInstance;
-
 }
 
 #if BOTW_VERSION == 160

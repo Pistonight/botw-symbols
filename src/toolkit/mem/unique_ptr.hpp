@@ -9,13 +9,10 @@
 namespace botw::mem {
 
 struct raw_free {
-    void operator()(void* ptr) const {
-        free(ptr);
-    }
+    void operator()(void* ptr) const { free(ptr); }
 };
 
-template <typename T>
-using unique_ptr = std::unique_ptr<T, raw_free>;
+template <typename T> using unique_ptr = std::unique_ptr<T, raw_free>;
 
 /* template <typename T> */
 /* class unique_ptr { */
@@ -64,15 +61,14 @@ using unique_ptr = std::unique_ptr<T, raw_free>;
 /*     T* m_ptr = nullptr; */
 /* }; */
 
-template <typename T>
-unique_ptr<T> make_unique() {
+template <typename T> unique_ptr<T> make_unique() {
     T* ptr = static_cast<T*>(malloc(sizeof(T)));
     if (!ptr) {
         return {};
     }
-    unique_ptr<T> uptr { ptr };
+    unique_ptr<T> uptr{ptr};
     new (ptr) T();
     return std::move(uptr);
 }
 
-}
+} // namespace botw::mem

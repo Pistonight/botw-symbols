@@ -1,4 +1,4 @@
-/** 
+/**
  * Unbuffered File IO for nn/fs.h
  */
 #pragma once
@@ -40,4 +40,4 @@ private:
     uint64_t m_offset = 0;
 };
 
-}  // namespace botw::savs
+} // namespace botw::io

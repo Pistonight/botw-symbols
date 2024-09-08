@@ -43,7 +43,8 @@ bool is_ready();
  * The max character limit is 280. Line breaks are not automatically added.
  * You need to break the lines yourself
  *
- * Return true if message is successfully scheduled (not necessarily shown or will show)
+ * Return true if message is successfully scheduled (not necessarily shown or
+ * will show)
  */
 bool print(const char* message);
 bool printf(const char* format, ...);
@@ -53,8 +54,8 @@ bool printf(const char* format, ...);
  *
  * Return true if a custom message was loaded
  */
-bool load_custom_mesasge(sead::SafeString* file, sead::SafeString* msg_id, WideString* out);
+bool load_custom_mesasge(sead::SafeString* file, sead::SafeString* msg_id,
+                         WideString* out);
 
-
-}
+} // namespace botw::msg::widget
 #endif

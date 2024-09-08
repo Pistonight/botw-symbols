@@ -8,8 +8,7 @@
 
 namespace botw::mem {
 
-template <typename T, u32 L>
-class NamedValue {
+template <typename T, u32 L> class NamedValue {
 public:
     NamedValue(T initial) : m_value(initial) { m_name[0] = '\0'; }
 
@@ -39,4 +38,4 @@ private:
     char m_name[L];
     T m_value;
 };
-}  // namespace botw::savs
+} // namespace botw::mem

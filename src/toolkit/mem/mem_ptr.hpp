@@ -66,7 +66,7 @@ public:
 
 extern "C" void* __botw_main_memory;
 
-/** 
+/**
  * Get the address of the main module
  *
  * Putting this in a mem_ptr will allow access raw memory from the main module
@@ -74,8 +74,6 @@ extern "C" void* __botw_main_memory;
  *
  * e.g. mem_ptr(main_module())[0x2cA1A78]
  */
-inline void** main_module() {
-    return &__botw_main_memory;
-}
+inline void** main_module() { return &__botw_main_memory; }
 
-}  // namespace botw::savs
+} // namespace botw::mem

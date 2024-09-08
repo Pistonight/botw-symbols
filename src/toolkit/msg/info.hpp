@@ -29,6 +29,7 @@ void printf(const char* format, ...);
  *
  * Return true if a custom message was loaded
  */
-bool load_custom_mesasge(sead::SafeString* file, sead::SafeString* msg_id, WideString* out);
+bool load_custom_mesasge(sead::SafeString* file, sead::SafeString* msg_id,
+                         WideString* out);
 
-}
+} // namespace botw::msg::info

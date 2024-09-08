@@ -2,8 +2,8 @@
 #include <exl/lib.hpp>
 #include <prim/seadSafeString.h>
 
-#include "toolkit/msg/loader_hook.hpp"
 #include "toolkit/msg/info.hpp"
+#include "toolkit/msg/loader_hook.hpp"
 #include "toolkit/msg/widget.hpp"
 
 namespace botw::msg {
@@ -34,7 +34,5 @@ void init_loader_hook() {
 #elif BOTW_VERSION == 150
     ksys_ui_getMessage_hook::InstallAtOffset(0x00AA248C);
 #endif
-
 }
-
 }
