@@ -1,6 +1,3 @@
 __pycache__/
 .buildcache/
-listing/150.txt
-*.h
-*.hpp
-include/glue/
+/botw

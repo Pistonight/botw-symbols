@@ -1,0 +1,20 @@
+version: '3'
+
+tasks:
+  check:
+    desc: Check formatting
+    cmds:
+      - clang-format -n -Werror src/**/*.cpp
+      - clang-format -n -Werror src/**/*.hpp
+      - python update.py --check
+
+  fix:
+    desc: Fix formatting in place
+    cmds:
+      - clang-format -i src/**/*.cpp
+      - clang-format -i src/**/*.hpp
+
+  update:
+    desc: Update the generated files
+    cmds:
+      - python update.py
