@@ -3,8 +3,9 @@
  */
 #pragma once
 
-#include "toolkit/mem/mem_ptr.hpp"
 #include <cstddef>
+
+#include "toolkit/mem/mem_ptr.hpp"
 
 namespace botw::mem {
 

@@ -2,13 +2,14 @@
  * A name-value pair
  */
 #pragma once
-#include <prim/seadSafeString.h>
+
+#include <cstdint>
 
 #define _named(x) #x, x
 
 namespace botw::mem {
 
-template <typename T, u32 L> class NamedValue {
+template <typename T, uint32_t L> class NamedValue {
 public:
     NamedValue(T initial) : m_value(initial) { m_name[0] = '\0'; }
 

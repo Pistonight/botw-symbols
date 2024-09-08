@@ -39,6 +39,8 @@ The toolkit library has some common code that I use for my mods. Feel free to us
 You also need to add `toolkit150.ld` or `toolkit160.ld` to the linker.
 These scripts serve as temporary solutions for symbols that are not in the decomp project yet.
 
+Make sure to `-DBOTW_VERSION=150` or `-DBOTW_VERSION=160` for the correct version when compiling.
+
 ## Development - Adding Symbols
 To add new symbols:
 - For 1.6.0, add it to `listing_160.csv`
