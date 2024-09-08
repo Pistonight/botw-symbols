@@ -2,60 +2,52 @@
 ![v150 badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Pistonight/botw-symbols/main/badges/150.json)
 ![v160 badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Pistonight/botw-symbols/main/badges/160.json)
 
-Linker scripts (*.ld) for linking modules against BOTW 1.5.0 and 1.6.0
+This repo contains:
+- Linker scripts (*.ld) for linking modules against BOTW 1.5.0 and 1.6.0
+- A toolkit containing helper functions for modding BOTW
 
-**If you are looking for the legacy botw-link build tool, see the [`botw-link`](https://github.com/Pistonight/botw-symbols/tree/botw-link) branch.
-I am working on a new build tool [megaton](https://github.com/Pistonight/megaton)**
-
-## Download
+## Install
 Clone the repo with git. Add `--depth 1` since the diffs might be large for generated files.
 ```
 git clone https://github.com/Pistonight/botw-symbols --depth 1
 ```
 Or add as a submodule to your repo
-```
+```bash
 # with git
 git submodule add --name botw-symbols --branch main https://github.com/Pistonight/botw-symbols <path>
 # with magoo
 magoo install https://github.com/Pistonight/botw-symbols <path> --name botw-symbols --branch main --depth 1
 ```
 
-## Usage
-The symbols in the linker scripts are meant to be used with the headers in the [decomp project](https://github.com/zeldaret/botw).
+## Linker Scripts
+The linker scripts are located in `/ld`. They contain addresses for symbols
+from the [decomp project](https://github.com/zeldaret/botw) so you can call them in your code.
 
-The scripts are passed to the linker (`ld`) using the `-T` flag:
-```
-ld -T path/to/ld/ld150.ld
-```
-Or in a makefile (and you are probably using CXX, `-Wl` means pass the flag to the linker):
-```
-LDFLAGS = -Wl,-T path/to/ld/ld150.ld
-```
-Replace `ld150.ld` with `ld160.ld` for version 1.6.0. See [version difference](#version-difference)
+The scripts are passed to the linker via the `-T` flag, or `-Wl,-T` when invoking the linker through the compiler.
 
-When you call a function defined in those headers, the linker will use the address defined in the linker script to link your module, allowing it to jump to the function
-in the game's binary at run time.
+The scripts are separated into 2 files: 
+- normal functions: (`ld150.ld` and `ld160.ld`)
+- stub functions: (`ld150_stubs.ld` and `ld160_stubs.ld`)
 
-If you are using the function symbol for hooking, declare it as `extern "C" <return type> <mangled name> (<args>);`
-and look for the mangled name in the linker script
-
-## Stubs
-The linker scripts are generated based on the decomp project. For symbols that have not been decompiled yet, they are stubbed in the linker script
-as `stub_<hex>` where `<hex>` is the 8-digit address of the symbol.
+Generally you only need the normal functions. The stub functions are address for undecompiled functions.
 
 For version 1.6.0, most symbols are stubbed because there's no decompilation done. If you figure out the address of a function in 1.6.0, feel free to
 contribute by adding it to `listing_160.csv` (using the mangled name from the decomp project)
 
-**The stubs are included in separate files**. For example, if you need stubs from 1.6.0, also feed `ld/ld160_stubs.ld` to the linker.
+## Toolkit Library
+The toolkit library has some common code that I use for my mods. Feel free to use them.
+You also need to add `toolkit150.ld` or `toolkit160.ld` to the linker.
+These scripts serve as temporary solutions for symbols that are not in the decomp project yet.
 
-## Version Difference
-Here are some differences and things to note when working with v1.5.0 versus v1.6.0:
-1. 1.6.0 has more stubs (see above)
-2. 1.6.0 is more optimized. It is possible that a function in 1.5.0 doesn't exist in 1.6.0 (either inlined or removed).
-   - In that case, you can use the decomp project to include the implementation in your cpp files
+Make sure to `-DBOTW_VERSION=150` or `-DBOTW_VERSION=160` for the correct version when compiling.
 
-## Keeping Up to Date
-The `update.py` script will update the linker scripts from `listing_160.csv` and the decomp project
+## Development - Adding Symbols
+To add new symbols:
+- For 1.6.0, add it to `listing_160.csv`
+- For 1.5.0, the symbols are sourced from [my fork of the decomp project](https://github.com/Pistonight/botw-decomp) and are updated every so often with upstream
+- Add to `toolkit_150.csv` or `toolkit_160.csv` for symbols neede in the toolkit
+
+The `update.py` script will update the linker scripts from the sources
 ```bash
 pip install requests
 python update.py

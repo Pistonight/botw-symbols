@@ -1,0 +1,3 @@
+0x00000000 __botw_main_memory
+0x00A95924 ksys_ui_showInfoOverlayWithString
+0x00AA248C ksys_ui_getMessage

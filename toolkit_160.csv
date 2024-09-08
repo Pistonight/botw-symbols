@@ -1,0 +1,13 @@
+0x00000000 __botw_main_memory
+0x00B7FB90 cpeam_pea_ready
+0x00F4D1A0 player_m362
+0x00F9D240 evt_delete_equipment
+0x0119C750 ScreenMessageTipsRuntime_doShowMessageTip
+0x01203730 uimanager__auto12
+0x0121B960 uimanager__unk
+0x01238680 ksys_ui_showInfoOverlayWithString
+0x0123DEA0 ksys_ui_getMessage
+0x02C9A458 cpeam_instance
+0x02CBA3B0 ksys_ui_sRuntimeTips
+0x02CBDB80 uimanager_instance
+0x02CC2490 ksys_ui_ScreenMgr_sInstance

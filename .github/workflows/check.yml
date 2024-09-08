@@ -1,0 +1,21 @@
+name: Check
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - uses: DoozyX/clang-format-lint-action@v0.18
+      with:
+        source: 'src'
+        clangFormatVersion: 18
+    - run: python update.py --check
