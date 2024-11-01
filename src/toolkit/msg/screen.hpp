@@ -2,7 +2,7 @@
  * Debug screen printing system
  *
  * This system enables game's debug printing system to print custom messages
- * on screen. 
+ * on screen.
  *
  * The debug system is completely removed in 1.6.0, so this system is only
  * available in 1.5.0.
@@ -30,5 +30,4 @@ namespace botw::msg::screen {
 void init(void (*compute_fn)(), void (*render_fn)(sead::TextWriter* w));
 
 #endif
-}
-
+} // namespace botw::msg::screen
