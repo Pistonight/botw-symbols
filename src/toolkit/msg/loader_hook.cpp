@@ -4,7 +4,9 @@
 
 #include "toolkit/msg/info.hpp"
 #include "toolkit/msg/loader_hook.hpp"
+#if BOTW_VERSION == 160
 #include "toolkit/msg/widget.hpp"
+#endif
 
 namespace botw::msg {
 
@@ -15,9 +17,11 @@ HOOK_DEFINE_TRAMPOLINE(ksys_ui_getMessage_hook){
         if (info::load_custom_mesasge(file, msg_id, out)) {
             return 0;
         }
+#if BOTW_VERSION == 160
         if (widget::load_custom_mesasge(file, msg_id, out)) {
             return 0;
         }
+#endif
         // original function for other cases
         return Orig(file, msg_id, out);
     }
