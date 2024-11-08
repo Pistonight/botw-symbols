@@ -11,11 +11,12 @@
 
 #if BOTW_VERSION != 160
 #include <prim/seadScopedLock.h>
+#else
+#include "toolkit/scoped_lock.hpp"
 #endif
 
 #include "toolkit/mem/named_value.hpp"
 #include "toolkit/pmdm.hpp"
-#include "toolkit/scoped_lock.hpp"
 #include "toolkit/sead/list.hpp"
 #include "toolkit/tcp.hpp"
 
@@ -195,7 +196,7 @@ bool PmdmSaveState::read_from(PmdmAccess pmdm) {
 #if BOTW_VERSION == 160
     ScopedLock lock(&pmdm->mCritSection.mCriticalSectionInner);
 #else
-    sead::ScopedLock lock(&pmdm->mCritSection);
+    ::sead::ScopedLock lock(&pmdm->mCritSection);
 #endif
     // lists
     m_items_list1_startend_node_prev =
@@ -263,7 +264,7 @@ void PmdmSaveState::write_to(PmdmAccess pmdm, bool sync_gamedata) const {
 #if BOTW_VERSION == 160
     ScopedLock lock(&pmdm->mCritSection.mCriticalSectionInner);
 #else
-    sead::ScopedLock lock(&pmdm->mCritSection);
+    ::sead::ScopedLock lock(&pmdm->mCritSection);
 #endif
     pmdm->mItemLists.list1.mStartEnd.mPrev =
         m_items_list1_startend_node_prev.hydrate(*pmdm);

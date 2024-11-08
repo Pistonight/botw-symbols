@@ -1,10 +1,15 @@
+#if BOTW_VERSION == 160
 #include <cstddef>
+#endif
+
 #include <exl_hook/prelude.h>
 #include <nn/os.h>
 
+#if BOTW_VERSION == 160
 #include "toolkit/mem/string.hpp"
 #include "toolkit/msg/loader_hook.hpp"
 #include "toolkit/msg/widget.hpp"
+#endif
 
 extern "C" {
 // 0x0119C750 (1.6.0)
