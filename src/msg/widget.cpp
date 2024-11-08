@@ -25,11 +25,15 @@ void ScreenMessageTipsRuntime_doShowMessageTip(void* this_, u32 idx, bool);
 
 // 0x02CBA3B0 (1.6.0)
 // 0x025EFC10 (1.5.0)
+#if BOTW_VERSION == 160
 extern botw::msg::widget::RuntimeTip* ksys_ui_sRuntimeTips;
+#endif
 
 // 0x02CC2490 (1.6.0)
 // 0x025FCC68 (1.5.0)
+#if BOTW_VERSION == 160
 extern botw::msg::widget::ScreenMgr* ksys_ui_ScreenMgr_sInstance;
+#endif
 }
 
 #if BOTW_VERSION == 160
