@@ -1,9 +1,10 @@
-#include <exl/types.h>
+
+#include <cstdint>
 
 namespace botw::mem {
 
 bool ptr_looks_safe(const void* ptr) {
-    u64 raw = reinterpret_cast<u64>(ptr);
+    uintptr_t raw = reinterpret_cast<uintptr_t>(ptr);
 
     if (raw > 0xFFFFFFFFFF || (raw >> 32 == 0)) {
         return false;

@@ -1,14 +1,14 @@
-#include <exl/lib.hpp>
+#include <exl_patch/prelude.h>
 
 #include "toolkit/msg/screen.hpp"
 
 namespace botw::msg::screen {
+#if BOTW_VERSION == 150
 namespace inst = exl::armv8::inst;
 namespace reg = exl::armv8::reg;
 
 static bool s_enabled = false;
 
-#if BOTW_VERSION == 150
 void init(void (*compute_fn)(), void (*render_fn)(sead::TextWriter* w)) {
     if (s_enabled) {
         return;

@@ -1,14 +1,10 @@
-#if BOTW_VERSION == 160
 #include <cstddef>
-#endif
-#include <exl/lib.hpp>
+#include <exl_hook/prelude.h>
 #include <nn/os.h>
 
-#if BOTW_VERSION == 160
 #include "toolkit/mem/string.hpp"
 #include "toolkit/msg/loader_hook.hpp"
 #include "toolkit/msg/widget.hpp"
-#endif
 
 extern "C" {
 // 0x0119C750 (1.6.0)
@@ -24,15 +20,11 @@ void ScreenMessageTipsRuntime_doShowMessageTip(void* this_, u32 idx, bool);
 
 // 0x02CBA3B0 (1.6.0)
 // 0x025EFC10 (1.5.0)
-#if BOTW_VERSION == 160
 extern botw::msg::widget::RuntimeTip* ksys_ui_sRuntimeTips;
-#endif
 
 // 0x02CC2490 (1.6.0)
 // 0x025FCC68 (1.5.0)
-#if BOTW_VERSION == 160
 extern botw::msg::widget::ScreenMgr* ksys_ui_ScreenMgr_sInstance;
-#endif
 }
 
 #if BOTW_VERSION == 160
@@ -46,7 +38,7 @@ static bool s_enabled = false;
 // clang-format off
 // Hooking the initialization of message tip to override the "Wolf Link" text and flag
 // this is because we need 2 messages and cycle between them to force update
-HOOK_DEFINE_TRAMPOLINE(ksys_ui_sInitMessageTipsRuntime_hook){
+hook_trampoline_(ksys_ui_sInitMessageTipsRuntime_hook){
     static void Callback(){
         Orig();
         ksys_ui_sRuntimeTips[0x0E].m_label = "0025";
@@ -62,7 +54,7 @@ HOOK_DEFINE_TRAMPOLINE(ksys_ui_sInitMessageTipsRuntime_hook){
 // clang-format off
 // This will make new messages show up more consistently
 // Although it's still not 100% consistent
-HOOK_DEFINE_TRAMPOLINE(ScreenMessageTipsRuntime_doShowMessageTip_hook){
+hook_trampoline_(ScreenMessageTipsRuntime_doShowMessageTip_hook){
     static void Callback(void* this_, u32 idx, bool){
         if (idx == 0x17 || idx == 0x0E){u32 set_idx = idx == 0x17 ? 0x0E : 0x17;
             (reinterpret_cast<bool*>(this_))[0x365C] = false;
