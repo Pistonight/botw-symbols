@@ -1,4 +1,4 @@
-#include <exl/lib.hpp>
+#include <exl_hook/prelude.h>
 
 #include <KingSystem/ActorSystem/actActorSystem.h>
 #include <KingSystem/ActorSystem/actPlayerInfo.h>
@@ -19,14 +19,14 @@ static bool s_need_sync = false;
 
 // clang-format off
 // This enables the actors and put them on the player
-HOOK_DEFINE_TRAMPOLINE(player_m362_hook) {
+hook_trampoline_(player_m362_hook) {
     static void Callback(void* player) {
         ScopedLock lock(&s_mutex);
         Orig(player);
     }
 };
 // This is called when unpausing. Returns 1 when equipments are ready
-HOOK_DEFINE_TRAMPOLINE(uiman_auto12_hook) {
+hook_trampoline_(uiman_auto12_hook) {
     static bool Callback(void* x) {
         // unpause
         tcp::sendf("uiauto2 called\n");
@@ -39,7 +39,7 @@ HOOK_DEFINE_TRAMPOLINE(uiman_auto12_hook) {
     }
 };
 // This is called when pressing dpad. Returns 1 if quick menu is brought up
-HOOK_DEFINE_TRAMPOLINE(uiman_unk_hook) {
+hook_trampoline_(uiman_unk_hook) {
     static bool Callback(void* x) {
         // pause
         tcp::sendf("uiunk called\n");

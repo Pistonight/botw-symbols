@@ -36,10 +36,31 @@ contribute by adding it to `listing_160.csv` (using the mangled name from the de
 
 ## Toolkit Library
 The toolkit library has some common code that I use for my mods. Feel free to use them.
-You also need to add `toolkit150.ld` or `toolkit160.ld` to the linker.
-These scripts serve as temporary solutions for symbols that are not in the decomp project yet.
+The library depends on my build system/tool [`megaton`](https://github.com/Pistonite/megaton)
 
-Make sure to `-DBOTW_VERSION=150` or `-DBOTW_VERSION=160` for the correct version when compiling.
+To configure the toolkit, add the following to `Megaton.toml` (assuming toolkit is at `libs/botw-symbols`):
+```toml
+[build]
+sources = [
+    # ... other sources,
+    "libs/botw-symbols/src"
+]
+includes = [
+    # ... other includes,
+    "libs/botw-symbols/include"
+]
+ldscripts = [
+    # ... other ldscripts,
+    "libs/botw-symbols/ld/ld150.ld", # or ld160.ld, depends on version
+]
+
+[build.flags]
+c = [
+    # ... other flags,
+    "-DBOTW_VERSION=150", # or 160
+    "-DBOTWTOOLKIT_TCP_SEND", # (optional) enable TCP debugging
+]
+```
 
 ## Development - Adding Symbols
 To add new symbols:

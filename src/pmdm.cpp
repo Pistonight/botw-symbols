@@ -11,13 +11,12 @@
 
 #if BOTW_VERSION != 160
 #include <prim/seadScopedLock.h>
+#else
+#include "toolkit/scoped_lock.hpp"
 #endif
 
 #include "toolkit/mem/named_value.hpp"
 #include "toolkit/pmdm.hpp"
-#if BOTW_VERSION == 160
-#include "toolkit/scoped_lock.hpp"
-#endif
 #include "toolkit/sead/list.hpp"
 #include "toolkit/tcp.hpp"
 
