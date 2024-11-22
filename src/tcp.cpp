@@ -13,7 +13,7 @@
 #include "toolkit/tcp.hpp"
 
 #if BOTW_VERSION == 150
-#include <exl/lib.hpp>
+#include <exl_patch/prelude.h>
 #endif
 
 extern "C" void* memalign(size_t alignment, size_t size);
@@ -84,8 +84,9 @@ void server_main(void*) {
     sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = nn::socket::InetHtons(s_port);
-    nn::socket::InetAton("0.0.0.0", reinterpret_cast<nn::socket::InAddr*>(
-                                        &server_addr.sin_addr.s_addr));
+    // using the C-compatible version of InetAton, since
+    // there were breaking changes to the API across 1.5/1.6
+    nnsocketInetAton("0.0.0.0", &server_addr.sin_addr);
     if (nn::socket::Bind(s_socket, reinterpret_cast<sockaddr*>(&server_addr),
                          sizeof(server_addr)) < 0) {
         s_status = ServerStatus::BindFail;
@@ -118,7 +119,7 @@ void init() {
     // Don't initialize PosTrackerUploader
     exl::patch::CodePatcher patcher{0x00a8d070};
     for (int i = 0; i < 23; i++) {
-        patcher.WriteInst(inst::Nop());
+        patcher.WriteInst(exl::armv8::inst::Nop());
     }
 #endif
     const size_t s_stack_size = 0x80000;

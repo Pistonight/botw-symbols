@@ -131,7 +131,7 @@ void init(void (*compute_fn)(), void (*render_fn)(sead::TextWriter* w)) {
 
     // Draw Bottom Left
     patcher.Seek(0x00C6651C);
-    patcher.WriteInst(inst::AddImmediate(reg::X0, reg::SP, 0x430));
+    patcher.WriteInst(inst::AddImm(reg::X0, reg::SP, 0x430));
     patcher.BranchLinkInst(reinterpret_cast<void*>(render_fn));
     patcher.WriteInst(inst::Nop());
     patcher.WriteInst(inst::Nop());
