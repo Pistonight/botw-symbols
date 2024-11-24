@@ -13,10 +13,13 @@ while True:
         client.connect((address, port))
         while True:
             data = client.recv(1)
+            if not data:
+                print("disconnected!")
+                break
             print(data.decode("utf-8"), end="")
             sys.stdout.flush()
     except KeyboardInterrupt:
-        print("closing connection")
+        print("stopping")
         client.close()
         break;
     except:

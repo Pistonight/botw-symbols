@@ -13,7 +13,7 @@
 #include "toolkit/tcp.hpp"
 
 #if BOTW_VERSION == 150
-#include <exl_patch/prelude.h>
+#include <megaton/patch.h>
 #endif
 
 extern "C" void* memalign(size_t alignment, size_t size);
@@ -117,10 +117,8 @@ void init() {
 #ifdef BOTWTOOLKIT_TCP_SEND
 #if BOTW_VERSION == 150
     // Don't initialize PosTrackerUploader
-    exl::patch::CodePatcher patcher{0x00a8d070};
-    for (int i = 0; i < 23; i++) {
-        patcher.WriteInst(exl::armv8::inst::Nop());
-    }
+    megaton::patch::main_stream(0x00a8d070)
+        << megaton::patch::repeat(exl::armv8::inst::Nop(), 23);
 #endif
     const size_t s_stack_size = 0x80000;
     void* s_stack = memalign(0x1000, s_stack_size);
