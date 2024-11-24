@@ -13,7 +13,6 @@ namespace patch = megaton::patch;
 static bool s_enabled = false;
 
 void init(void (*compute_fn)(), void (*render_fn)(sead::TextWriter* w)) {
-    static_assert(std::is_function_v<void()>);
     if (s_enabled) {
         return;
     }
