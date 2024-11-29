@@ -44,58 +44,62 @@ static mem::WStringBuffer<WIDGET_BUFFER_LEN> s_widget;
 static uint32_t s_widget_idx = 0;
 static bool s_enabled = false;
 
-// clang-format off
-// Hooking the initialization of message tip to override the "Wolf Link" text and flag
-// this is because we need 2 messages and cycle between them to force update
-hook_trampoline_(ksys_ui_sInitMessageTipsRuntime_hook){
-    static void Callback(){
-        Orig();
-        ksys_ui_sRuntimeTips[0x0E].m_label = "0025";
-        // note that this will not work for 1.5.0
-        // 1.6.0 added a message for VR mode without a flag,
-        // so they added a check for skipping the flag check when
-        // the flag is empty
-        ksys_ui_sRuntimeTips[0x0E].m_flag = "";
-    }
-};
-// clang-format on
+// Hooking the initialization of message tip to override the "Wolf Link" text
+// and flag this is because we need 2 messages and cycle between them to force
+// update
+struct hook_trampoline_(ksys_ui_sInitMessageTipsRuntime){
+#if BOTW_VERSION == 160
+    target_offset_(0x00020950)
+#elif BOTW_VERSION == 150
+    target_offset_(0x00A261CC)
+#endif
+        static void call(){call_original();
+ksys_ui_sRuntimeTips[0x0E].m_label = "0025";
+// note that this will not work for 1.5.0
+// 1.6.0 added a message for VR mode without a flag,
+// so they added a check for skipping the flag check when
+// the flag is empty
+ksys_ui_sRuntimeTips[0x0E].m_flag = "";
+} // namespace botw::msg::widget
+}
+;
 
-// clang-format off
 // This will make new messages show up more consistently
 // Although it's still not 100% consistent
-hook_trampoline_(ScreenMessageTipsRuntime_doShowMessageTip_hook){
-    static void Callback(void* this_, u32 idx, bool){
-        if (idx == 0x17 || idx == 0x0E){u32 set_idx = idx == 0x17 ? 0x0E : 0x17;
-            (reinterpret_cast<bool*>(this_))[0x365C] = false;
-            (reinterpret_cast<int*>(this_))[0xD96] = set_idx;
-            (reinterpret_cast<int*>(this_))[0xD98] = set_idx;
-            nn::os::YieldThread();
-            nn::os::SleepThread(nn::TimeSpan::FromNanoSeconds(100 * 1000 * 1000));
-        }
-        return Orig(this_, idx, true);
-    }
-};
+struct hook_trampoline_(ScreenMessageTipsRuntime_doShowMessageTip_hook){
+#if BOTW_VERSION == 160
+    target_offset_(0x0119C750)
+#elif BOTW_VERSION == 150
+// TODO: find the offset for 1.5.0
+#endif
+        static void call(void* this_, u32 idx,
+                         bool){if (idx == 0x17 || idx == 0x0E){
+            u32 set_idx = idx == 0x17 ? 0x0E : 0x17;
+(reinterpret_cast<bool*>(this_))[0x365C] = false;
+(reinterpret_cast<int*>(this_))[0xD96] = set_idx;
+(reinterpret_cast<int*>(this_))[0xD98] = set_idx;
+nn::os::YieldThread();
+nn::os::SleepThread(nn::TimeSpan::FromNanoSeconds(100 * 1000 * 1000));
+}
+return call_original(this_, idx, true);
+}
+}
+;
 
 void init() {
-    msg::init_loader_hook();
-    if (s_enabled) {
-        return;
-    }
     s_enabled = true;
+    msg::init_loader_hook();
+    ksys_ui_sInitMessageTipsRuntime::install();
 #if BOTW_VERSION == 160
-    ksys_ui_sInitMessageTipsRuntime_hook::InstallAtOffset(0x00020950);
-    ScreenMessageTipsRuntime_doShowMessageTip_hook::InstallAtOffset(0x0119C750);
-#elif BOTW_VERSION == 150
-    ksys_ui_sInitMessageTipsRuntime_hook::InstallAtOffset(0x00A261CC);
     // TODO: find the offset for 1.5.0
+    ScreenMessageTipsRuntime_doShowMessageTip_hook::install();
 #endif
 }
 
-bool is_ready() {
-    return ksys_ui_ScreenMgr_sInstance != nullptr;
-}
+bool is_ready() { return ksys_ui_ScreenMgr_sInstance != nullptr; }
 
-bool load_custom_mesasge(sead::SafeString* file, sead::SafeString* msg_id, WideString* out) {
+bool load_custom_mesasge(sead::SafeString* file, sead::SafeString* msg_id,
+                         WideString* out) {
     if (!s_enabled) {
         return false;
     }
@@ -144,6 +148,5 @@ bool printf(const char* format, ...) {
     result[size] = '\0';
     return print(result);
 }
-
 }
 #endif

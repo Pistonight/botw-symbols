@@ -26,42 +26,42 @@ struct hook_trampoline_(player_m362) {
     }
 };
 // This is called when unpausing. Returns 1 when equipments are ready
-struct hook_trampoline_(uiman_auto12) {
-    target_offset_(0x01203730)
-    static bool call(void* x) {
+struct hook_trampoline_(uiman_auto12){
+    target_offset_(0x01203730) static bool call(void* x){
         // unpause
         tcp::sendf("uiauto2 called\n");
-        ScopedLock lock(&s_mutex);
-        s_uimanager = x;
-        s_paused = false;
-        bool r = call_original(x);
-        tcp::sendf("uiauto2 returned %d\n", r);
-        return r;
-    }
-};
+ScopedLock lock(&s_mutex);
+s_uimanager = x;
+s_paused = false;
+bool r = call_original(x);
+tcp::sendf("uiauto2 returned %d\n", r);
+return r;
+} // namespace botw::toolkit::equipment
+}
+;
 // This is called when pressing dpad. Returns 1 if quick menu is brought up
-struct hook_trampoline_(uiman_unk) {
-    target_offset_(0x0121B960)
-    static bool call(void* x) {
+struct hook_trampoline_(uiman_unk){
+    target_offset_(0x0121B960) static bool call(void* x){
         // pause
         tcp::sendf("uiunk called\n");
-        ScopedLock lock(&s_mutex);
-        bool r = call_original(x);
-        tcp::sendf("uiunk returned %d\n", r);
-        if (r) {
-            s_paused = true;
-            if (s_need_sync) {
-                PmdmAccess pmdm;
-                if (!pmdm.is_nullptr()) {
-                    tcp::sendf("-- creating equipment\n");
-                    pmdm->createPlayerEquipment();
-                    s_need_sync = false;
-                }
-            }
+ScopedLock lock(&s_mutex);
+bool r = call_original(x);
+tcp::sendf("uiunk returned %d\n", r);
+if (r) {
+    s_paused = true;
+    if (s_need_sync) {
+        PmdmAccess pmdm;
+        if (!pmdm.is_nullptr()) {
+            tcp::sendf("-- creating equipment\n");
+            pmdm->createPlayerEquipment();
+            s_need_sync = false;
         }
-        return r;
     }
-};
+}
+return r;
+}
+}
+;
 
 void init() {
     if (s_initialized) {
