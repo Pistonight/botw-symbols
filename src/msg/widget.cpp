@@ -2,7 +2,7 @@
 #include <cstddef>
 #endif
 
-#include <exl_hook/prelude.h>
+#include <megaton/hook.h>
 #include <nn/os.h>
 
 #if BOTW_VERSION == 160

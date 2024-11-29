@@ -1,5 +1,4 @@
-
-#include <exl_hook/prelude.h>
+#include <megaton/hook.h>
 #include <prim/seadSafeString.h>
 
 #include "toolkit/msg/info.hpp"
@@ -10,10 +9,13 @@
 
 namespace botw::msg {
 
-static bool s_installed = false;
-// clang-format off
-hook_trampoline_(ksys_ui_getMessage_hook){
-    static int Callback(sead::SafeString * file, sead::SafeString* msg_id, WideString* out) {
+struct hook_trampoline_(ksys_ui_getMessage) {
+#if BOTW_VERSION == 160
+    target_offset_(0x0123DEA0)
+#elif BOTW_VERSION == 150
+    target_offset_(0x00AA248C)
+#endif
+    static int call(sead::SafeString * file, sead::SafeString* msg_id, WideString* out) {
         if (info::load_custom_mesasge(file, msg_id, out)) {
             return 0;
         }
@@ -23,20 +25,12 @@ hook_trampoline_(ksys_ui_getMessage_hook){
         }
 #endif
         // original function for other cases
-        return Orig(file, msg_id, out);
+        return call_original(file, msg_id, out);
     }
 };
-// clang-format on
 
 void init_loader_hook() {
-    if (s_installed) {
-        return;
-    }
-    s_installed = true;
-#if BOTW_VERSION == 160
-    ksys_ui_getMessage_hook::InstallAtOffset(0x0123DEA0);
-#elif BOTW_VERSION == 150
-    ksys_ui_getMessage_hook::InstallAtOffset(0x00AA248C);
-#endif
+    ksys_ui_getMessage::install();
 }
+
 }

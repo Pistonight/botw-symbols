@@ -1,4 +1,4 @@
-#include <exl_hook/prelude.h>
+#include <megaton/hook.h>
 
 #include <KingSystem/ActorSystem/actActorSystem.h>
 #include <KingSystem/ActorSystem/actPlayerInfo.h>
@@ -17,34 +17,36 @@ static void* s_uimanager = nullptr;
 static bool s_paused = false;
 static bool s_need_sync = false;
 
-// clang-format off
 // This enables the actors and put them on the player
-hook_trampoline_(player_m362_hook) {
-    static void Callback(void* player) {
+struct hook_trampoline_(player_m362) {
+    target_offset_(0x00F4D1A0);
+    static void call(void* player) {
         ScopedLock lock(&s_mutex);
-        Orig(player);
+        call_original(player);
     }
 };
 // This is called when unpausing. Returns 1 when equipments are ready
-hook_trampoline_(uiman_auto12_hook) {
-    static bool Callback(void* x) {
+struct hook_trampoline_(uiman_auto12) {
+    target_offset_(0x01203730)
+    static bool call(void* x) {
         // unpause
         tcp::sendf("uiauto2 called\n");
         ScopedLock lock(&s_mutex);
         s_uimanager = x;
         s_paused = false;
-        bool r = Orig(x);
+        bool r = call_original(x);
         tcp::sendf("uiauto2 returned %d\n", r);
         return r;
     }
 };
 // This is called when pressing dpad. Returns 1 if quick menu is brought up
-hook_trampoline_(uiman_unk_hook) {
-    static bool Callback(void* x) {
+struct hook_trampoline_(uiman_unk) {
+    target_offset_(0x0121B960)
+    static bool call(void* x) {
         // pause
         tcp::sendf("uiunk called\n");
         ScopedLock lock(&s_mutex);
-        bool r = Orig(x);
+        bool r = call_original(x);
         tcp::sendf("uiunk returned %d\n", r);
         if (r) {
             s_paused = true;
@@ -61,17 +63,15 @@ hook_trampoline_(uiman_unk_hook) {
     }
 };
 
-// clang-format on
-
 void init() {
     if (s_initialized) {
         return;
     }
     s_initialized = true;
     nn::os::InitializeMutex(&s_mutex, true /*recursive*/, 0);
-    player_m362_hook::InstallAtOffset(0x00F4D1A0);
-    uiman_auto12_hook::InstallAtOffset(0x01203730);
-    uiman_unk_hook::InstallAtOffset(0x0121B960);
+    player_m362::install();
+    uiman_auto12::install();
+    uiman_unk::install();
 }
 
 int sync_with_pmdm() {
